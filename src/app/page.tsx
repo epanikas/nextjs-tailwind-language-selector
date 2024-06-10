@@ -1,7 +1,7 @@
 import Head from 'next/head'
-import styles from '@/styles/Home.module.css'
+import styles from '@/app/styles/Home.module.css'
 import React from "react";
-import {LanguageSelector} from "@/components/LanguageSelector";
+import {LanguageSelector} from "@/app/components/LanguageSelector";
 import {Inter} from "next/font/google";
 import {useTranslation} from "react-i18next";
 

@@ -1,3 +1,7 @@
+## this is a fork for language selector in this github repository: https://github.com/simplelocalize/nextjs-tailwind-language-selector
+
+here is the original description:
+
 # Language selector with Tailwind and flag-icons
 
 This is an example of using [Next.js](https://nextjs.org/) with [Tailwind CSS](https://tailwindcss.com/) and [SimpleLocalize](https://simplelocalize.io/) with [flag-icons](https://flagicons.lipis.dev) for language selector.
@@ -24,3 +28,4 @@ pnpm dev
 Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
 
 You can start editing the page by modifying `pages/index.tsx`. The page auto-updates as you edit the file.
+

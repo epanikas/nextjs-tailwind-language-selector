@@ -1,7 +1,9 @@
+"use client"
+
 import React, {useEffect, useState} from "react";
 import {useTranslation} from "react-i18next";
 import styles from "./LanguageSelector.module.scss";
-import {cdnBaseUrl, environment, projectToken} from "../../i18n";
+import {cdnBaseUrl, environment, projectToken} from "../i18n/i18n";
 
 interface FlagIconProps {
     countryCode: string;
