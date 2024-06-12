@@ -1,9 +1,8 @@
 "use client"
 
 import React, {useEffect, useState} from "react";
-import {useTranslation} from "react-i18next";
 import styles from "./LanguageSelector.module.scss";
-import {cdnBaseUrl, environment, projectToken} from "../i18n/i18n";
+import LanguageDef from "@/app/i18n/language-def";
 
 interface FlagIconProps {
     countryCode: string;
@@ -22,31 +21,17 @@ function FlagIcon({countryCode = ""}: FlagIconProps) {
     );
 }
 
-interface Language {
-    key: string;
-    name: string;
-}
-
 const LANGUAGE_SELECTOR_ID = 'language-selector';
 
-export const LanguageSelector = () => {
-    const {i18n} = useTranslation();
-    const [languages, setLanguages] = useState<Language[]>([]);
+export const LanguageSelector = ({languages, selectedLng}: {selectedLng: string, languages: LanguageDef[]}): JSX.Element => {
+
     const [isOpen, setIsOpen] = useState(true);
-    const selectedLanguage = languages.find(language => language.key === i18n.language);
+    const selectedLanguage = languages.find(language => language.key === selectedLng/*i18n.language*/);
 
-    const handleLanguageChange = async (language: Language) => {
-        await i18n.changeLanguage(language.key);
-        setIsOpen(false);
+    const handleLanguageChange = async (language: LanguageDef) => {
+        window.location.assign(window.location.origin + "/" + language.key);
+        // setIsOpen(false);
     };
-
-    useEffect(() => {
-        const setupLanguages = async () => {
-            const appLanguages = await fetch(`${cdnBaseUrl}/${projectToken}/${environment}/_languages`).then(response => response.json());
-            setLanguages(appLanguages);
-        };
-        setupLanguages();
-    }, []);
 
     useEffect(() => {
         const handleWindowClick = (event: any) => {
@@ -63,7 +48,7 @@ export const LanguageSelector = () => {
     }, []);
 
     if (!selectedLanguage) {
-        return null;
+        return <div>no selected language</div>;
     }
 
     return (

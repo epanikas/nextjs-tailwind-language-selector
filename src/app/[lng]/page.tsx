@@ -3,14 +3,20 @@ import styles from '@/app/styles/Home.module.css'
 import React from "react";
 import {LanguageSelector} from "@/app/components/LanguageSelector";
 import {Inter} from "next/font/google";
-import {useTranslation} from "react-i18next";
+import LanguageDef from "@/app/i18n/language-def";
+import {useTranslation, allLanguages} from "@/app/i18n/server-i18n-conf";
 
 const inter = Inter({subsets: ['latin']})
 
+export async function generateStaticParams(): Promise<LanguageDef[]> {
+    return await allLanguages();
+}
 
-export default function Home() {
+export default async function Home({params}: {params: {lng: string} }): Promise<JSX.Element> {
 
-    const {t} = useTranslation();
+    const { lng } = params;
+
+    const { t } = await useTranslation(lng);
 
     return (
         <>
@@ -54,7 +60,7 @@ export default function Home() {
                             })}
                         </p>
 
-                        <LanguageSelector/>
+                        <LanguageSelector selectedLng={lng} languages={await allLanguages()} />
                 </div>
 
                 <div className={styles.grid}>
