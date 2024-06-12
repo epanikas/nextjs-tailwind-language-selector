@@ -29,8 +29,8 @@ export const LanguageSelector = ({languages, selectedLng}: {selectedLng: string,
     const selectedLanguage = languages.find(language => language.key === selectedLng/*i18n.language*/);
 
     const handleLanguageChange = async (language: LanguageDef) => {
-        window.location.assign(window.location.origin + "/" + language.key);
-        // setIsOpen(false);
+        document.cookie = "language=" + language.key + "; path=/";
+        window.location.reload();
     };
 
     useEffect(() => {
