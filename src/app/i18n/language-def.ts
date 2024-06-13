@@ -8,6 +8,6 @@ export default class LanguageDef {
        this.key = "n/a";
        this.name = "n/a";
        this.isDefault = false;
-       this.icon = "n/a"
+       this.icon = "n/a";
     }
 }

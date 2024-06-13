@@ -5,6 +5,7 @@ import {LanguageSelector} from "@/app/components/LanguageSelector";
 import {Inter} from "next/font/google";
 import LanguageDef from "@/app/i18n/language-def";
 import {useTranslation, allLanguages} from "@/app/i18n/server-i18n-conf";
+import TranslatedCounter from "@/app/components/translated-counter";
 
 const inter = Inter({subsets: ['latin']})
 
@@ -59,6 +60,8 @@ export default async function Home({params}: {params: {lng: string} }): Promise<
                                 defaultValue: "This is a demo of a language selector component for Next.js and Tailwind"
                             })}
                         </p>
+
+                        <TranslatedCounter lng={lng} />
 
                         <LanguageSelector selectedLng={lng} languages={await allLanguages()} />
                 </div>

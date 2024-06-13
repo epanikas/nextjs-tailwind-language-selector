@@ -1,6 +1,5 @@
 import {createInstance, i18n, TFunction} from 'i18next'
 import resourcesToBackend from 'i18next-resources-to-backend'
-import { initReactI18next } from 'react-i18next/initReactI18next'
 import {getOptions} from './settings'
 import LanguageDef from "@/app/i18n/language-def";
 import LanguageDetector from "i18next-browser-languagedetector";
@@ -31,6 +30,9 @@ const translationToResource = async (language: string, ns: string) => {
 export const allLanguages = async (): Promise<LanguageDef[]> => {
     console.log("getting all languages ");
     const resp = await fetch(`${loadPathBase}/_languages`);
+    if (!resp.ok) {
+        throw new Error("can't load languages: " + resp.status + ", " + (await resp.text()));
+    }
     const json =  (await resp.json()).map((l: LanguageDef) => {
         if (!l.icon) {
             l.icon = l.key;
@@ -47,7 +49,6 @@ export const allLanguages = async (): Promise<LanguageDef[]> => {
 const initI18next = async (lng: string, ns?: string): Promise<i18n> => {
     const i18nInstance = createInstance()
     await i18nInstance
-        .use(initReactI18next)
         .use(LanguageDetector)
         .use(resourcesToBackend(translationToResource))
         .init(getOptions(lng, ns))
