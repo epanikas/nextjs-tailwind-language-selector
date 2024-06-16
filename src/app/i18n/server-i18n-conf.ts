@@ -2,7 +2,6 @@ import {createInstance, i18n, TFunction} from 'i18next'
 import resourcesToBackend from 'i18next-resources-to-backend'
 import {getOptions} from './settings'
 import LanguageDef from "@/app/i18n/language-def";
-import LanguageDetector from "i18next-browser-languagedetector";
 
 
 export const projectToken = "YOUR simplelocalize.io PROJECT TOKEN";
@@ -49,7 +48,6 @@ export const allLanguages = async (): Promise<LanguageDef[]> => {
 const initI18next = async (lng: string, ns?: string): Promise<i18n> => {
     const i18nInstance = createInstance()
     await i18nInstance
-        .use(LanguageDetector)
         .use(resourcesToBackend(translationToResource))
         .init(getOptions(lng, ns))
     return i18nInstance
@@ -58,7 +56,7 @@ const initI18next = async (lng: string, ns?: string): Promise<i18n> => {
 export async function useTranslation(lng: string, ns?: string, options: {keyPrefix?: string} = {}): Promise<{t: TFunction<any, string>, i18n: i18n}> {
     const i18nextInstance = await initI18next(lng, ns)
     return {
-        t: i18nextInstance.getFixedT(lng, Array.isArray(ns) ? ns[0] : ns, options.keyPrefix),
+        t: i18nextInstance.t,
         i18n: i18nextInstance
     }
 }

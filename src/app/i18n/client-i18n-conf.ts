@@ -24,13 +24,7 @@ i18next
     .init({
         debug: true,
         supportedLngs: languages,
-        fallbackLng: 'en',
-        detection: {
-            order: ['querystring', 'cookie'],
-            lookupQuerystring: 'hl',
-            lookupCookie: 'language',
-            caches: ['cookie']
-        },
+        fallbackLng: 'en'
     })
 
 export function useTranslationClient(lng: string, ns: string)  {

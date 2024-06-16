@@ -1,7 +1,6 @@
 "use client"
 
 import {useState} from "react";
-import "@/app/i18n/client-i18n-conf"
 import {useTranslationClient} from "@/app/i18n/client-i18n-conf";
 
 export default function TranslatedCounter({lng}: { lng: string }): JSX.Element {
