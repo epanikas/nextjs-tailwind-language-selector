@@ -7,18 +7,12 @@ export const cookieName = 'i18next'
 
 export function getOptions (lng = fallbackLng, ns: string = defaultNS) {
     return {
-        // debug: true,
+        debug: true,
         supportedLngs: languages,
         fallbackLng,
         lng,
         fallbackNS: defaultNS,
         defaultNS,
-        ns,
-        detection: {
-            order: ['querystring', 'cookie'],
-            lookupQuerystring: 'hl',
-            lookupCookie: 'language',
-            caches: ['cookie']
-        },
+        ns
     }
 }

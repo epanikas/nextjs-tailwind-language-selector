@@ -1,21 +1,31 @@
 import i18next from "i18next";
 import {initReactI18next, useTranslation} from "react-i18next";
 import resourcesToBackend from "i18next-resources-to-backend";
-
-export const projectToken = "your project token";
-export const cdnBaseUrl = "https://cdn.simplelocalize.io";
-export const environment = "_latest"; // or "_production"
-
-export const loadPathBase = `${cdnBaseUrl}/${projectToken}/${environment}`;
+import {getOptions} from "@/app/i18n/settings";
 
 const languages = ['en', 'fr', 'de', 'ru']
 
+const runsOnServerSide = typeof window === 'undefined'
+
+
+export const cdnBaseUrl = "https://cdn.simplelocalize.io";
+export const environment = "_latest"; // or "_production"
 
 const translationToResource = async (language: string, ns: string) => {
     console.log("querying the language ", language, " on namespace ", ns);
-    const resp = await fetch(`${loadPathBase}/${language}/${ns}`);
-    const json =  await resp.json()
-    return json;
+    let backendUrl;
+    if (runsOnServerSide) {
+        const projectToken = process.env.SIMPLELOCALIZE_PROJECT_TOKEN;
+        const loadPathBase = `${cdnBaseUrl}/${projectToken}/${environment}`;
+        backendUrl = `${loadPathBase}/${language}/${ns}`
+    } else {
+        backendUrl = `${location.origin}/api/i18n/${language}/${ns}`;
+    }
+
+    console.log("language query url: ", backendUrl);
+
+    const resp = await fetch(backendUrl);
+    return await resp.json()
 }
 
 i18next
@@ -28,5 +38,5 @@ i18next
     })
 
 export function useTranslationClient(lng: string, ns: string)  {
-    return useTranslation(ns, {lng});
+    return useTranslation(ns, getOptions(lng, ns));
 }

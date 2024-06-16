@@ -4,7 +4,7 @@ import React from "react";
 import {LanguageSelector} from "@/app/components/LanguageSelector";
 import {Inter} from "next/font/google";
 import LanguageDef from "@/app/i18n/language-def";
-import {useTranslation, allLanguages} from "@/app/i18n/server-i18n-conf";
+import {useTranslationServer, allLanguages} from "@/app/i18n/server-i18n-conf";
 import TranslatedCounter from "@/app/components/translated-counter";
 
 const inter = Inter({subsets: ['latin']})
@@ -17,7 +17,7 @@ export default async function Home({params}: {params: {lng: string} }): Promise<
 
     const { lng } = params;
 
-    const { t } = await useTranslation(lng);
+    const { t } = await useTranslationServer(lng, 'common');
 
     return (
         <>

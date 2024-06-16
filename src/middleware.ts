@@ -4,10 +4,16 @@ const languages = ['en', 'fr', 'de', 'ru']
 
 export async function middleware(request: NextRequest) {
 
-    console.log("received url ", request.nextUrl)
     console.log("received host ", request.nextUrl.host)
     console.log("received pathname ", request.nextUrl.pathname)
     console.log("received cookies ", request.cookies)
+
+    if (request.nextUrl.pathname.startsWith("/api")) {
+        /*
+         * don't redirect for api calls
+         */
+        return NextResponse.next();
+    }
 
     const existingLang = request.nextUrl.pathname.substring(1, 3);
     console.log("existingLang ", existingLang);

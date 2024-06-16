@@ -4,8 +4,8 @@ import {getOptions} from './settings'
 import LanguageDef from "@/app/i18n/language-def";
 
 
-export const projectToken = "YOUR simplelocalize.io PROJECT TOKEN";
-export const apiKey = "YOUR simplelocalize.io API KEY";
+export const projectToken = process.env.SIMPLELOCALIZE_PROJECT_TOKEN;
+export const apiKey = process.env.SIMPLELOCALIZE_API_KEY_;
 export const cdnBaseUrl = "https://cdn.simplelocalize.io";
 export const environment = "_latest"; // or "_production"
 
@@ -22,12 +22,10 @@ if (!runsOnServerSide) {
 const translationToResource = async (language: string, ns: string) => {
     console.log("querying the language ", language, " on namespace ", ns);
     const resp = await fetch(`${loadPathBase}/${language}/${ns}`);
-    const json =  await resp.json()
-    return json;
+    return await resp.json()
 }
 
 export const allLanguages = async (): Promise<LanguageDef[]> => {
-    console.log("getting all languages ");
     const resp = await fetch(`${loadPathBase}/_languages`);
     if (!resp.ok) {
         throw new Error("can't load languages: " + resp.status + ", " + (await resp.text()));
@@ -53,7 +51,7 @@ const initI18next = async (lng: string, ns?: string): Promise<i18n> => {
     return i18nInstance
 }
 
-export async function useTranslation(lng: string, ns?: string, options: {keyPrefix?: string} = {}): Promise<{t: TFunction<any, string>, i18n: i18n}> {
+export async function useTranslationServer(lng: string, ns?: string): Promise<{t: TFunction<any, string>, i18n: i18n}> {
     const i18nextInstance = await initI18next(lng, ns)
     return {
         t: i18nextInstance.t,
