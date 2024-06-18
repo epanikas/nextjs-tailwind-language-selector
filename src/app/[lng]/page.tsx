@@ -9,8 +9,8 @@ import TranslatedCounter from "@/app/components/translated-counter";
 
 const inter = Inter({subsets: ['latin']})
 
-export async function generateStaticParams(): Promise<LanguageDef[]> {
-    return await allLanguages();
+export async function generateStaticParams(): Promise<{params: {lng: string} }[]> {
+    return (await allLanguages()).map((l: LanguageDef) => {return {params: {lng: l.key}};});
 }
 
 export default async function Home({params}: {params: {lng: string} }): Promise<JSX.Element> {
