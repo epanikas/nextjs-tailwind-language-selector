@@ -27,6 +27,7 @@ const translationToResource = async (language: string, ns: string) => {
 
 export const allLanguages = async (): Promise<LanguageDef[]> => {
     const resp = await fetch(`${loadPathBase}/_languages`);
+    console.log("fetching languages :", `${loadPathBase}/_languages`)
     if (!resp.ok) {
         throw new Error("can't load languages: " + resp.status + ", " + (await resp.text()));
     }
