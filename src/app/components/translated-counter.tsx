@@ -2,10 +2,11 @@
 
 import {useState} from "react";
 import {useTranslationClient} from "@/app/i18n/client-i18n-conf";
+import {Resource} from "i18next";
 
-export default function TranslatedCounter({lng, languages}: { lng: string, languages: string[] }): JSX.Element {
+export default function TranslatedCounter({lng, languages, resources}: { lng: string, languages: string[], resources: Resource }): JSX.Element {
 
-    const { t, i18n} = useTranslationClient(lng, 'common', languages);
+    const { t, i18n} = useTranslationClient(lng, 'common', languages, resources);
 
     const [counter, setCounter] = useState(0);
 

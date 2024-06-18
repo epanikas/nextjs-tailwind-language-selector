@@ -1,7 +1,8 @@
-import {createInstance, i18n, TFunction} from 'i18next'
+import {createInstance, i18n, Resource, TFunction} from 'i18next'
 import resourcesToBackend from 'i18next-resources-to-backend'
 import {getOptions} from './settings'
 import LanguageDef from "@/app/i18n/language-def";
+import {ResourceLanguage} from "i18next/typescript/options";
 
 
 export const projectToken = process.env.SIMPLELOCALIZE_PROJECT_TOKEN;
@@ -42,6 +43,28 @@ export const allLanguages = async (): Promise<LanguageDef[]> => {
     })
     console.log("found languages: ", json)
     return json;
+}
+
+async function getTranslation(lng: string, ns: string): Promise<ResourceLanguage> {
+    const resp = await fetch(`${loadPathBase}/${lng}/${ns}`)
+    const res = {} as ResourceLanguage;
+    res[ns] = await resp.json();
+    return res;
+}
+
+export async function getTranslationResources(): Promise<Resource> {
+
+    const languages: LanguageDef[] = await allLanguages();
+
+    const res = {} as Resource;
+
+    for (const l of languages) {
+        res[l.key] = await getTranslation(l.key, 'common')
+    }
+
+    console.log("translations", res);
+
+    return res;
 }
 
 const initI18next = async (lng: string, ns: string): Promise<i18n> => {

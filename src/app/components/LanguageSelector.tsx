@@ -94,12 +94,12 @@ export const LanguageSelector = ({languages, selectedLng}: {selectedLng: string,
                         </button>
                     </div>
                     {isOpen && <div
-                        className="origin-top-right absolute right-0 mt-2 w-96 rounded-md shadow-lg bg-white ring-1 ring-black ring-opacity-5"
+                        className="origin-top-right absolute right-0 mt-2 rounded-md shadow-lg bg-white ring-1 ring-black ring-opacity-5"
                         role="menu"
                         aria-orientation="vertical"
                         aria-labelledby="language-selector"
                     >
-                        <div className="py-1 grid grid-cols-2 gap-2" role="none">
+                        <div className="py-1 grid grid-cols-1 gap-2" role="none">
                             {languages.map((language, index) => {
                                 return (
                                     <button

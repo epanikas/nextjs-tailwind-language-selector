@@ -4,7 +4,7 @@ import React from "react";
 import {LanguageSelector} from "@/app/components/LanguageSelector";
 import {Inter} from "next/font/google";
 import LanguageDef from "@/app/i18n/language-def";
-import {useTranslationServer, allLanguages} from "@/app/i18n/server-i18n-conf";
+import {useTranslationServer, allLanguages, getTranslationResources} from "@/app/i18n/server-i18n-conf";
 import TranslatedCounter from "@/app/components/translated-counter";
 
 const inter = Inter({subsets: ['latin']})
@@ -63,7 +63,7 @@ export default async function Home({params}: {params: {lng: string} }): Promise<
                             })}
                         </p>
 
-                        <TranslatedCounter lng={lng} languages={languages.map(l => l.key)}/>
+                        <TranslatedCounter lng={lng} languages={languages.map(l => l.key)} resources={await getTranslationResources()}/>
 
                         <LanguageSelector selectedLng={lng} languages={languages} />
                 </div>
