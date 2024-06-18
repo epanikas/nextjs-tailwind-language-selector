@@ -3,10 +3,7 @@ import {initReactI18next, useTranslation} from "react-i18next";
 import resourcesToBackend from "i18next-resources-to-backend";
 import {getOptions} from "@/app/i18n/settings";
 
-const languages = ['en', 'fr', 'de', 'ru']
-
 const runsOnServerSide = typeof window === 'undefined'
-
 
 export const cdnBaseUrl = "https://cdn.simplelocalize.io";
 export const environment = "_latest"; // or "_production"
@@ -28,15 +25,14 @@ const translationToResource = async (language: string, ns: string) => {
     return await resp.json()
 }
 
-i18next
-    .use(initReactI18next)
-    .use(resourcesToBackend(translationToResource))
-    .init({
-        debug: true,
-        supportedLngs: languages,
-        fallbackLng: 'en'
-    })
+export function useTranslationClient(lng: string, ns: string, languages: string[])  {
 
-export function useTranslationClient(lng: string, ns: string)  {
-    return useTranslation(ns, getOptions(lng, ns));
+    if (!i18next.isInitialized && languages) {
+        i18next
+            .use(initReactI18next)
+            .use(resourcesToBackend(translationToResource))
+            .init(getOptions(lng, ns, languages))
+    }
+
+    return useTranslation(ns, getOptions(lng, ns, languages));
 }

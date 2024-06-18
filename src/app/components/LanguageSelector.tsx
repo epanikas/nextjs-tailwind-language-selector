@@ -10,10 +10,6 @@ interface FlagIconProps {
 
 function FlagIcon({countryCode = ""}: FlagIconProps) {
 
-    if (countryCode === "en") {
-        countryCode = "gb";
-    }
-
     return (
         <span
             className={`fi fis ${styles.fiCircle} inline-block mr-2 fi-${countryCode}`}
@@ -28,9 +24,25 @@ export const LanguageSelector = ({languages, selectedLng}: {selectedLng: string,
     const [isOpen, setIsOpen] = useState(true);
     const selectedLanguage = languages.find(language => language.key === selectedLng/*i18n.language*/);
 
-    const handleLanguageChange = async (language: LanguageDef) => {
-        document.cookie = "language=" + language.key + "; path=/";
-        window.location.reload();
+    const handleLanguageChange = async (lng: string) => {
+
+        const urlPath = window.location.pathname;
+
+        const langsPattern = languages.map(l => l.key).join("|");
+        console.log("client langsPattern", langsPattern, urlPath)
+        const regex = new RegExp(`\/(${langsPattern})(.*)`);
+
+        const chunkedUrl = regex.exec(urlPath);
+        console.log("chunkedUrl", chunkedUrl)
+
+        if (chunkedUrl) {
+            const restOfUrl = chunkedUrl[2]
+            window.location.assign(`/${lng}${restOfUrl}`)
+        } else {
+            document.cookie = `language=${lng}; path=/`;
+            window.location.reload();
+        }
+
     };
 
     useEffect(() => {
@@ -64,7 +76,7 @@ export const LanguageSelector = ({languages, selectedLng}: {selectedLng: string,
                             aria-haspopup="true"
                             aria-expanded={isOpen}
                         >
-                            <FlagIcon countryCode={selectedLanguage.key}/>
+                            <FlagIcon countryCode={selectedLanguage.icon}/>
                             {selectedLanguage.name}
                             <svg
                                 className="-mr-1 ml-2 h-5 w-5"
@@ -92,7 +104,7 @@ export const LanguageSelector = ({languages, selectedLng}: {selectedLng: string,
                                 return (
                                     <button
                                         key={language.key}
-                                        onClick={() => handleLanguageChange(language)}
+                                        onClick={() => handleLanguageChange(language.key)}
                                         className={`${
                                             selectedLanguage.key === language.key
                                                 ? "bg-gray-100 text-gray-900"
@@ -100,7 +112,7 @@ export const LanguageSelector = ({languages, selectedLng}: {selectedLng: string,
                                         } block px-4 py-2 text-sm text-left items-center inline-flex hover:bg-gray-100 ${index % 2 === 0 ? 'rounded-r' : 'rounded-l'}`}
                                         role="menuitem"
                                     >
-                                        <FlagIcon countryCode={language.key}/>
+                                        <FlagIcon countryCode={language.icon}/>
                                         <span className="truncate">{language.name}</span>
                                     </button>
                                 );

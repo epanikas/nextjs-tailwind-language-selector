@@ -43,15 +43,15 @@ export const allLanguages = async (): Promise<LanguageDef[]> => {
     return json;
 }
 
-const initI18next = async (lng: string, ns?: string): Promise<i18n> => {
+const initI18next = async (lng: string, ns: string): Promise<i18n> => {
     const i18nInstance = createInstance()
     await i18nInstance
         .use(resourcesToBackend(translationToResource))
-        .init(getOptions(lng, ns))
+        .init(getOptions(lng, ns, (await allLanguages()).map(l => l.key)))
     return i18nInstance
 }
 
-export async function useTranslationServer(lng: string, ns?: string): Promise<{t: TFunction<any, string>, i18n: i18n}> {
+export async function useTranslationServer(lng: string, ns: string): Promise<{t: TFunction<any, string>, i18n: i18n}> {
     const i18nextInstance = await initI18next(lng, ns)
     return {
         t: i18nextInstance.t,

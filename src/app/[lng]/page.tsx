@@ -19,6 +19,8 @@ export default async function Home({params}: {params: {lng: string} }): Promise<
 
     const { t } = await useTranslationServer(lng, 'common');
 
+    const languages = await allLanguages();
+
     return (
         <>
             <Head>
@@ -61,9 +63,9 @@ export default async function Home({params}: {params: {lng: string} }): Promise<
                             })}
                         </p>
 
-                        <TranslatedCounter lng={lng} />
+                        <TranslatedCounter lng={lng} languages={languages.map(l => l.key)}/>
 
-                        <LanguageSelector selectedLng={lng} languages={await allLanguages()} />
+                        <LanguageSelector selectedLng={lng} languages={languages} />
                 </div>
 
                 <div className={styles.grid}>

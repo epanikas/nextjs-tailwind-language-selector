@@ -1,4 +1,12 @@
-## this is a fork for language selector in this github repository: https://github.com/simplelocalize/nextjs-tailwind-language-selector
+## this is a fork for language selector in this github repository: 
+https://github.com/simplelocalize/nextjs-tailwind-language-selector
+
+This repository is a demonstration code to the blog post 
+
+## Building localized NextJS application with language selector and cloud hosted translations
+
+- [Part 1 / 2 - server side](https://epanikas.hashnode.dev/building-localized-nextjs-application-with-language-selector-and-cloud-hosted-translations-part-1-2-server-side)
+- [Part 2 / 2 - server side](https://epanikas.hashnode.dev/building-localized-nextjs-application-with-language-selector-and-cloud-hosted-translations-part-2-2-client-side)
 
 here is the original description:
 

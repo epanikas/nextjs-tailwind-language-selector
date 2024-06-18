@@ -1,12 +1,13 @@
 import {NextRequest, NextResponse} from "next/server";
-
-const languages = ['en', 'fr', 'de', 'ru']
+import {allLanguages} from "@/app/i18n/server-i18n-conf";
 
 export async function middleware(request: NextRequest) {
 
     console.log("received host ", request.nextUrl.host)
     console.log("received pathname ", request.nextUrl.pathname)
     console.log("received cookies ", request.cookies)
+
+    const languages = await allLanguages();
 
     if (request.nextUrl.pathname.startsWith("/api")) {
         /*
@@ -15,24 +16,24 @@ export async function middleware(request: NextRequest) {
         return NextResponse.next();
     }
 
-    const existingLang = request.nextUrl.pathname.substring(1, 3);
-    console.log("existingLang ", existingLang);
+    const langsPattern = languages.map(l => l.key).join("|");
+    console.log("middleware langsPattern", langsPattern, request.nextUrl.pathname)
+    const regex = new RegExp(`\/(${langsPattern})(.*)`);
 
-    const hasLang = languages.find(l => l == existingLang)
+    const chunkedUrl = regex.exec(request.nextUrl.pathname);
 
-    let newLang = 'en';
-    const langCookie = request.cookies.get("language");
-    if (langCookie) {
-        newLang = langCookie.value;
+    if (chunkedUrl) {
+        const resp = NextResponse.next();
+        const lang = chunkedUrl[1]
+        resp.cookies.set("language", lang, {path: "/"});
+        return resp;
+    } else {
+        const langCookie = request.cookies.get("language");
+        const newLang = langCookie ? langCookie.value : 'en';
+        const destination = `${request.nextUrl.origin}/${newLang}${request.nextUrl.pathname}`;
+        console.log("rewriting to ", destination);
+        return  NextResponse.rewrite(destination);
     }
-
-    if (existingLang == newLang) {
-        return NextResponse.next();
-    }
-
-    const path: string = hasLang ? request.nextUrl.pathname.substring(3) : request.nextUrl.pathname;
-
-    return NextResponse.redirect(`${request.nextUrl.origin}/${newLang}/${path}`);
 }
 
 export const config = {
