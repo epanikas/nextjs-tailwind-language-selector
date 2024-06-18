@@ -8,6 +8,9 @@ This repository is a demonstration code to the blog post
 - [Part 1 / 2 - server side](https://epanikas.hashnode.dev/building-localized-nextjs-application-with-language-selector-and-cloud-hosted-translations-part-1-2-server-side)
 - [Part 2 / 2 - server side](https://epanikas.hashnode.dev/building-localized-nextjs-application-with-language-selector-and-cloud-hosted-translations-part-2-2-client-side)
 
+demo project is available here
+[demo projcet](https://nextjs-tailwind-language-selector-pjpl.vercel.app/)
+
 here is the original description:
 
 # Language selector with Tailwind and flag-icons
