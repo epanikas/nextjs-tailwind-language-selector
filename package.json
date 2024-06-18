@@ -16,7 +16,7 @@
     "@typescript-eslint/parser": "^7.0.0",
     "axios": "^1.6.0",
     "eslint": "^8.56.0",
-    "eslint-config-next": "^14.2.3",
+    "eslint-config-next": "14.2.3",
     "flag-icons": "^6.6.6",
     "i18next": "^23.11.5",
     "i18next-browser-languagedetector": "^7.2.1",
