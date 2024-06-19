@@ -22,18 +22,21 @@ export async function middleware(request: NextRequest) {
 
     const chunkedUrl = regex.exec(request.nextUrl.pathname);
 
+    let resp: NextResponse;
+    let lang: string;
     if (chunkedUrl) {
-        const resp = NextResponse.next();
-        const lang = chunkedUrl[1]
-        resp.cookies.set("language", lang, {path: "/"});
-        return resp;
+        resp = NextResponse.next();
+        lang = chunkedUrl[1]
     } else {
         const langCookie = request.cookies.get("language");
-        const newLang = langCookie ? langCookie.value : 'en';
-        const destination = `${request.nextUrl.origin}/${newLang}${request.nextUrl.pathname}`;
+        lang = langCookie ? langCookie.value : 'en';
+        const destination = `${request.nextUrl.origin}/${lang}${request.nextUrl.pathname}`;
         console.log("rewriting to ", destination);
-        return  NextResponse.rewrite(destination);
+        resp = NextResponse.rewrite(destination);
     }
+    console.log("setting language cookie", lang, "domain", request.nextUrl.hostname);
+    resp.cookies.set("language", lang, {path: "/", domain: request.nextUrl.hostname});
+    return resp;
 }
 
 export const config = {
